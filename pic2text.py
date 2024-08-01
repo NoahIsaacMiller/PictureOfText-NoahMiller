@@ -25,7 +25,7 @@ except:
 class Setting:
     chunkHeight = chunkWidth = 16               # 拼图块尺寸
     fontSize = 18                               # 字体大小
-    imageMode = "RGB"                           # 图像模式
+    imageMode = "RGBA"                           # 图像模式
 
     fontRelPath = "./AliPuHui-Bold.ttf"         # 字体文件相对路径
     f = open(fontRelPath, "rb")                 # 下面连着三步是为了能正常创建字体对象, 如果这样依旧报错, 把字体路径改成绝对路径
