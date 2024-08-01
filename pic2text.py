@@ -15,7 +15,7 @@ try:
     import click
 except:
     print("缺失关键库, 正在安装(但一定要有Pip)...")
-    os.system("pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
+    os.system("'pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
     print("安转完成")
     from PIL import Image, ImageDraw, ImageFont
     import click
@@ -29,7 +29,7 @@ class Setting:
 
     fontRelPath = "./AliPuHui-Bold.ttf"         # 字体文件相对路径
     f = open(fontRelPath, "rb")                 # 下面连着三步是为了能正常创建字体对象, 如果这样依旧报错, 把字体路径改成绝对路径
-    font = ImageFont.truetype(f)                
+    font = ImageFont.truetype(f, fontSize)                
     f.close()
 
     chunkFill = "lightgrey"                     # 拼图块背景填充颜色, 亮灰色效果可以
@@ -57,16 +57,21 @@ def drawChar2ChunkByImageDrawObj(char, draw:ImageDraw.ImageDraw, offsetX:int, of
 
 # 组织各函数进行图片文字化的函数
 
+
+
+
 @click.command()
 @click.argument("fp",type=click.Path(exists=True))
 @click.argument("text")
 @click.option("-c", "--color", default=setting.chunkFill, help="指定拼图块背景颜色")
-@click.option("-l", "--outline", default=setting.chunkOutline, help="指定拼图块边框颜色.")
+@click.option("-l", "--outline-color", default=setting.chunkOutline, help="指定拼图块边框颜色.")
 @click.option("-o", "--output",default="output.png", help="指定文件输出路径")
 @click.option("-h", "--height", default=setting.chunkHeight, help="指定拼图块高度")
 @click.option("-w", "--width", default=setting.chunkWidth, help="指定拼图块宽度")
 @click.option("-m", "--mode", default=setting.imageMode, help="指定图片模式")
-def process(text, fp, mode, width, height,output, outline, color):
+@click.option( "-fs", "--font-size", default=setting.fontSize, help="指定字体大小")
+@click.option("-ff", "--font-family", default=setting.fontRelPath, help="指定字体")
+def process(text, fp, mode, width, height,output, outline_color, color, font_size, font_family):
     imgSrc = Image.open(fp)                     # 加载原图
     w, h = imgSrc.size                          # 原图尺寸
     # 创建拼图块的图片对象
@@ -90,7 +95,7 @@ def process(text, fp, mode, width, height,output, outline, color):
                 height/2,
                 fill=imgSrc.getpixel((x,y)),
                 color=color,
-                outline=outline,
+                outline=outline_color,
             )
 
             # 拼图块拼到拼图框架的合适位置 (粘贴到指定位置)
