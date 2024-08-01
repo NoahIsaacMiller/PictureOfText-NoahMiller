@@ -8,15 +8,14 @@
 """
 
 
-# 保Pillow导入
-import os, time
+# 保Pillow,Click导入
+import os
 try:
     from PIL import Image, ImageDraw, ImageFont
     import click
 except:
     print("缺失Pillow库, 正在安装(但一定要有Pip)...")
     os.system("'pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
-    time.sleep(10)
     print("安转完成")
     from PIL import Image, ImageDraw, ImageFont
     import click
