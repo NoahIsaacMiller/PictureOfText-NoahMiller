@@ -8,14 +8,14 @@
 """
 
 
-# 保Pillow导入
+# 保Pillow, Click导入
 import os
 try:
     from PIL import Image, ImageDraw, ImageFont
     import click
 except:
     print("缺失关键库, 正在安装(但一定要有Pip)...")
-    os.system("'pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
+    os.system("pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
     print("安转完成")
     from PIL import Image, ImageDraw, ImageFont
     import click
@@ -24,7 +24,7 @@ except:
 # 参数设置
 class Setting:
     chunkHeight = chunkWidth = 16               # 拼图块尺寸
-    fontSize = 22                               # 字体大小
+    fontSize = 16                               # 字体大小
     imageMode = "RGBA"                          # 图像模式
 
     fontRelPath = "./AliPuHui-Bold.ttf"         # 字体文件相对路径
@@ -32,7 +32,7 @@ class Setting:
     font = ImageFont.truetype(f)                
     f.close()
 
-    chunkFill = "grey"                     # 拼图块背景填充颜色, 亮灰色效果可以
+    chunkFill = "lightgrey"                     # 拼图块背景填充颜色, 亮灰色效果可以
     chunkOutline = None                         # 拼图块边框, 一般测试的时候用, 可以把拼图框架网格化
     chunkOutlineWidth = 1                       # 拼图块边框宽度
 
@@ -57,9 +57,6 @@ def drawChar2ChunkByImageDrawObj(char, draw:ImageDraw.ImageDraw, offsetX:int, of
 
 # 组织各函数进行图片文字化的函数
 
-
-
-
 @click.command()
 @click.argument("fp",type=click.Path(exists=True))
 @click.argument("text")
@@ -70,7 +67,7 @@ def drawChar2ChunkByImageDrawObj(char, draw:ImageDraw.ImageDraw, offsetX:int, of
 @click.option("-w", "--width", default=setting.chunkWidth, help="指定拼图块宽度")
 @click.option("-m", "--mode", default=setting.imageMode, help="指定图片模式")
 def process(text, fp, mode, width, height,output, outline, color):
-    imgSrc = Image.open(fp)               # 加载原图
+    imgSrc = Image.open(fp)                     # 加载原图
     w, h = imgSrc.size                          # 原图尺寸
     # 创建拼图块的图片对象
     chunk = Image.new(mode, (width, height))
