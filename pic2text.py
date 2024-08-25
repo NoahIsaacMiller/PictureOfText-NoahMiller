@@ -7,16 +7,22 @@
    - @link:【『整活』用百万汉字拼一张彩色照片】 https://www.bilibili.com/video/BV1mq4y1n7aE/?share_source=copy_web&vd_source=136849b7b9a5d8445987a371deb2fbf9
 """
 
+LIB_MISSING = "缺失关键库, 正在安装(但一定要有Pip)..."
+INSTALL_SUCCESSED = "安装完成"
+PROCESSED_AND_SAVING = "图片处理完成, 正在保存..."
 
 # 保Pillow, Click导入
 import os
 try:
     from PIL import Image, ImageDraw, ImageFont
     import click
-except:
-    print("缺失关键库, 正在安装(但一定要有Pip)...")
-    os.system("'pip install pillow click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
-    print("安转完成")
+except ImportError:
+    print(LIB_MISSING)
+    os.system("python -m ensurepip")
+    os.system("python -m pip install --upgrade pip -i https://pypi.mirrors.ustc.edu.cn/simple/")
+    os.system("pip install pillow  -i https://pypi.mirrors.ustc.edu.cn/simple/")
+    os.system("pip install click  -i https://pypi.mirrors.ustc.edu.cn/simple/")
+    print(INSTALL_SUCCESSED)
     from PIL import Image, ImageDraw, ImageFont
     import click
 
@@ -104,7 +110,7 @@ def process(text, fp, mode, width, height,output, outline_color, color, font_siz
             charIndex+=1
             if charIndex == len(text):
                 charIndex = 0
-    print("图片处理完成, 正在保存...")
+    print(PROCESSED_AND_SAVING)
     picFrame.save(output)
     print(f"图片已保存至 '{os.path.abspath(output)}'")
 
